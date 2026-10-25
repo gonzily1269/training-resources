@@ -85,8 +85,6 @@ curl http://127.0.0.1:8000/orders/1
 - FastAPI
 - SQLAlchemy
 - SQLite
-- pytest
 - uv
-- VS Code
 
 詳細な要件や設計書は `docs/` 配下を参照してください。
