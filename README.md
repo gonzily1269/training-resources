@@ -70,21 +70,13 @@ curl http://127.0.0.1:8000/orders
 件数を絞り込む場合は `limit` を使います（1〜100件まで）。
 
 ```bash
-curl "http://127.0.0.1:8000/orders?limit=20"
+curl http://127.0.0.1:8000/orders?limit=20
 ```
 
 ### 注文を1件取得する
 
 ```bash
 curl http://127.0.0.1:8000/orders/1
-```
-
-## 6. 配送API の接続先を変更したい場合
-
-環境変数 `DELIVERY_API_BASE_URL` を設定すると、配送API の接続先を変更できます。
-
-```bash
-export DELIVERY_API_BASE_URL=http://127.0.0.1:9000
 ```
 
 ## 開発環境

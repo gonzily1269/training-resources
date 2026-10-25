@@ -1,3 +1,5 @@
-from .order_service import OrderService
+"""注文ユースケースと実行結果を公開する。"""
 
-__all__ = ["OrderService"]
+from .order_service import OrderResult, OrderService
+
+__all__ = ["OrderResult", "OrderService"]

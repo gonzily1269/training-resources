@@ -1,20 +1,19 @@
-from datetime import UTC, datetime
+"""DBやWebフレームワークに依存しない注文ドメインモデルを定義する。"""
 
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-
-class Base(DeclarativeBase):
-    pass
+from dataclasses import dataclass
+from datetime import datetime
 
 
-class Order(Base):
-    __tablename__ = "orders"
+@dataclass(frozen=True)
+class Order:
+    """注文の業務情報を表す不変のドメインモデル。
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    customer_name: Mapped[str] = mapped_column(String(100), nullable=False)
-    update_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(UTC),
-        onupdate=lambda: datetime.now(UTC),
-        nullable=False,
-    )
+    Attributes:
+        id: 注文の識別子。
+        customer_name: 顧客名。
+        update_at: 注文情報の最終更新日時。
+    """
+
+    id: int
+    customer_name: str
+    update_at: datetime

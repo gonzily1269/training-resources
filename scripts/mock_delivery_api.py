@@ -1,5 +1,8 @@
+"""ローカル開発で使用する配送APIモックを提供する。"""
+
 import asyncio
 
+import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
@@ -12,6 +15,14 @@ _counter_lock = asyncio.Lock()
 
 @app.get("/delivery-status/{order_id}", response_model=None)
 async def get_delivery_status(order_id: int) -> dict[str, object] | JSONResponse:
+    """注文の配送状況を返し、同時実行上限を超えた場合は429を返す。
+
+    Args:
+        order_id: 配送状況を照会する注文の識別子。
+
+    Returns:
+        dict[str, object] | JSONResponse: 配送状況、または同時実行超過エラー。
+    """
     global _current_requests
 
     async with _counter_lock:
@@ -35,6 +46,4 @@ async def get_delivery_status(order_id: int) -> dict[str, object] | JSONResponse
 
 
 if __name__ == "__main__":
-    import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=9000)

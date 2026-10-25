@@ -1,1 +1,1 @@
-"""Order management service."""
+"""注文管理サービスのアプリケーションパッケージ。"""

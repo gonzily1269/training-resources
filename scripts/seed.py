@@ -1,10 +1,12 @@
+"""開発・研修用の注文データをSQLiteへ登録する。"""
+
 import random
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import func, select
 
-from order_service.database import SessionLocal, engine
-from order_service.model import Base, Order
+from order_service.database import Base, SessionLocal, engine
+from order_service.repository import OrderRecord
 
 ORDER_COUNT = 100
 RANDOM_SEED = 42
@@ -19,14 +21,18 @@ COMPANY_NAMES = [
 
 
 def seed() -> None:
+    """注文テーブルを作成し、サンプル注文がなければ100件登録する。
+
+    既に注文データが存在する場合は重複登録を避けるため処理を終了する。
+    """
     Base.metadata.create_all(engine)
     with SessionLocal() as db:
-        if db.scalar(select(func.count()).select_from(Order)):
+        if db.scalar(select(func.count()).select_from(OrderRecord)):
             return
         random_generator = random.Random(RANDOM_SEED)
         db.add_all(
             [
-                Order(
+                OrderRecord(
                     id=order_id,
                     customer_name=(
                         f"{COMPANY_NAMES[(order_id - 1) % len(COMPANY_NAMES)]} "

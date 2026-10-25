@@ -1,3 +1,5 @@
-from .order_repository import OrderRepository
+"""注文データの永続化アダプターを公開する。"""
 
-__all__ = ["OrderRepository"]
+from .order_repository import OrderRecord, OrderRepository
+
+__all__ = ["OrderRecord", "OrderRepository"]

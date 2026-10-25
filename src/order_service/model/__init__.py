@@ -1,3 +1,5 @@
-from .order import Base, Order
+"""DBやWeb層に依存しないドメインモデルを公開する。"""
 
-__all__ = ["Base", "Order"]
+from .order import Order
+
+__all__ = ["Order"]

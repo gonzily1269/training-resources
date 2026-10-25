@@ -1,3 +1,5 @@
-from .order_controller import router
+"""注文APIのルーターを公開する。"""
 
-__all__ = ["router"]
+from .order_controller import create_order_router
+
+__all__ = ["create_order_router"]
