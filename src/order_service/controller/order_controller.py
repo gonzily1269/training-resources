@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from order_service.schema import OrderResponse
-from order_service.service import OrderService
+from order_service.service import OrderResult, OrderService
 
 
 def create_order_router(
@@ -46,11 +46,7 @@ def create_order_router(
         order = await service.get_order(order_id)
         if order is None:
             raise HTTPException(status_code=404, detail="Order not found")
-        return OrderResponse(
-            orderId=order.order_id,
-            customerName=order.customer_name,
-            deliveryStatus=order.delivery_status,
-        )
+        return _to_order_response(order)
 
     @router.get("/orders", response_model=list[OrderResponse])
     async def list_orders(
@@ -67,13 +63,15 @@ def create_order_router(
             list[OrderResponse]: 注文情報と配送状況の一覧。
         """
         orders = await service.list_orders(limit=limit)
-        return [
-            OrderResponse(
-                orderId=order.order_id,
-                customerName=order.customer_name,
-                deliveryStatus=order.delivery_status,
-            )
-            for order in orders
-        ]
+        return [_to_order_response(order) for order in orders]
 
     return router
+
+
+def _to_order_response(order: OrderResult) -> OrderResponse:
+    """ユースケース結果をAPIレスポンスへ変換する。"""
+    return OrderResponse(
+        orderId=order.order_id,
+        customerName=order.customer_name,
+        deliveryStatus=order.delivery_status,
+    )
